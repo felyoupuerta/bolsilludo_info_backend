@@ -1,4 +1,6 @@
 {
     "name": "usuario/proyecto",
+    "description": "Proyecto de prueba",
+    "license": "proprietary",
     "require": {}
 }
