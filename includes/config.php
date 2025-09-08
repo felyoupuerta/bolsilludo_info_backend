@@ -1,10 +1,10 @@
 <?php
 // Configuración de la base de datos
-define('DB_HOST', 'bolsbd.local');
+define('DB_HOST', 'sql105.infinityfree.com');
 define('DB_PORT', 3306);
-define('DB_NAME', 'bolsilludo');
-define('DB_USER', 'data');
-define('DB_PASS', 'pipe.2K88008');
+define('DB_NAME', 'if0_39818842_bolsilludo');
+define('DB_USER', 'if0_39818842');
+define('DB_PASS', 'pipe2K88008');
 
 // Iniciar sesión
 session_start();

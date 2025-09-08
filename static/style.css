@@ -1,3 +1,48 @@
+/*Fixture*/
+
+
+.resultado-partido {
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 5px 10px;
+    border-radius: 8px;
+    min-width: 60px;
+    text-align: center;
+}
+
+.resultado-partido.ganado {
+    background: #28a745;
+    color: #fff;
+}
+
+.resultado-partido.perdido {
+    background: #dc3545;
+    color: #fff;
+}
+
+.resultado-partido.empatado {
+    background: #ffc107;
+    color: #000;
+}
+
+.estado {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.estado.pendiente {
+    background: #6c757d;
+    color: white;
+}
+
+.estado.finalizado {
+    background: #007bff;
+    color: white;
+}
 /* Modal Galería */
 .modal {
     display: none;
