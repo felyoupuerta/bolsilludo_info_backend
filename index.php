@@ -545,37 +545,80 @@ require_once 'includes/header.php';
                                 <span class="like-count"><?php echo $likesCount; ?></span>
                             </button>
 
-                            <!-- Sección de comentarios -->
-                            <div class="comentarios">
-                                <h4>Comentarios</h4>
-                                <form class="comment-form" data-news-id="<?php echo $noticia['id']; ?>">
-                                    <textarea name="comment" rows="2" placeholder="Escribe un comentario..." required></textarea>
-                                    <button type="submit">Enviar</button>
-                                </form>
+<!-- Sección de comentarios -->
+                            <div class="comentarios-section">
+                                <div class="comentarios-header">
+                                    <h4 class="comentarios-titulo">
+                                        <i class="fas fa-comments"></i>
+                                        Comentarios
+                                    </h4>
+                                </div>
+                                
+                                <div class="comment-form-container">
+                                    <form class="comment-form" data-news-id="<?php echo $noticia['id']; ?>">
+                                        <div class="form-group">
+                                            <textarea name="comment" rows="3" placeholder="¿Qué opinas sobre esta noticia?" required></textarea>
+                                            <div class="form-actions">
+                                                <button type="submit" class="btn-comment">
+                                                    <i class="fas fa-paper-plane"></i>
+                                                    Enviar comentario
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
 
-                                <ul class="comentarios-lista">
-                                    <?php if (!empty($comentarios)): ?>
-                                        <?php foreach ($comentarios as $c): ?>
-                                            <li>
-                                                <strong><?php echo htmlspecialchars($c['username']); ?>:</strong>
-                                                <?php echo htmlspecialchars($c['comment']); ?>
-                                                <br>
-                                                <small class="fecha-comentario"><?php echo date("d/m/Y H:i", strtotime($c['created_at'])); ?></small>
+                                <div class="comentarios-container">
+                                    <ul class="comentarios-lista">
+                                        <?php if (!empty($comentarios)): ?>
+                                            <?php foreach ($comentarios as $c): ?>
+                                                <li class="comentario-item">
+                                                    <div class="comentario-card">
+                                                        <div class="comentario-header">
+                                                            <div class="comentario-avatar">
+                                                                <i class="fas fa-user-circle"></i>
+                                                            </div>
+                                                            <div class="comentario-info">
+                                                                <strong class="comentario-usuario"><?php echo htmlspecialchars($c['username']); ?></strong>
+                                                                <small class="comentario-fecha">
+                                                                    <i class="far fa-clock"></i>
+                                                                    <?php echo date("d/m/Y H:i", strtotime($c['created_at'])); ?>
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="comentario-contenido">
+                                                            <p><?php echo nl2br(htmlspecialchars($c['comment'])); ?></p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <li class="no-comentarios">
+                                                <div class="empty-state">
+                                                    <i class="far fa-comment-alt"></i>
+                                                    <h5>¡Sé el primero en comentar!</h5>
+                                                    <p>Comparte tu opinión sobre esta noticia</p>
+                                                </div>
                                             </li>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <li class="no-comentarios">Sé el primero en comentar</li>
-                                    <?php endif; ?>
-                                </ul>
+                                        <?php endif; ?>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="col-12">
-                    <p class="text-center text-muted">No hay noticias disponibles en este momento.</p>
-                    <div class="text-center">
-                        <a href="#" class="btn">Volver al inicio</a>
+                    <div class="empty-news-state">
+                        <i class="far fa-newspaper"></i>
+                        <h3>No hay noticias disponibles</h3>
+                        <p class="text-muted">Vuelve más tarde para ver las últimas actualizaciones</p>
+                        <div class="text-center">
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-home"></i>
+                                Volver al inicio
+                            </a>
+                        </div>
                     </div>
                 </div>
             <?php endif; ?>
@@ -947,22 +990,38 @@ require_once 'includes/header.php';
                         // Limpiar textarea
                         textarea.value = "";
                         
-                        // Actualizar lista de comentarios
-                        const comentariosLista = form.nextElementSibling;
-                        const noCommentsItem = comentariosLista.querySelector(".no-comentarios");
-                        
+                        // Encontrar el contenedor de comentarios correctamente
+                        const comentariosContainer = form.closest('.comentarios-section').querySelector('.comentarios-container');
+                        const comentariosLista = comentariosContainer.querySelector('.comentarios-lista');
+                        const noCommentsItem = comentariosLista.querySelector(".no-comentarios, .empty-state");
+
                         if (noCommentsItem) {
                             noCommentsItem.remove();
                         }
-                        
-                        // Crear nuevo elemento de comentario
+
+                        // Crear nuevo elemento de comentario con la estructura correcta
                         const newComment = document.createElement("li");
+                        newComment.className = "comentario-item";
                         newComment.innerHTML = `
-                            <strong>${data.username}:</strong> ${data.comment}
-                            <br>
-                            <small class="fecha-comentario">Justo ahora</small>
+                            <div class="comentario-card">
+                                <div class="comentario-header">
+                                    <div class="comentario-avatar">
+                                        <i class="fas fa-user-circle"></i>
+                                    </div>
+                                    <div class="comentario-info">
+                                        <strong class="comentario-usuario">${data.username}</strong>
+                                        <small class="comentario-fecha">
+                                            <i class="far fa-clock"></i>
+                                            Justo ahora
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="comentario-contenido">
+                                    <p>${data.comment.replace(/\n/g, '<br>')}</p>
+                                </div>
+                            </div>
                         `;
-                        
+
                         comentariosLista.insertBefore(newComment, comentariosLista.firstChild);
                         
                         // Animación de entrada
@@ -989,6 +1048,7 @@ require_once 'includes/header.php';
             }
         });
     });
+
 </script>
 
 <?php require_once 'includes/footer.php'; ?>

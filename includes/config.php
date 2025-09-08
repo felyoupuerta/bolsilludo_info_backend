@@ -1,14 +1,15 @@
 <?php
 // Configuración de la base de datos
-define('DB_HOST', 'sql105.infinityfree.com');
+define('DB_HOST', 'localhost');
 define('DB_PORT', 3306);
-define('DB_NAME', 'if0_39818842_bolsilludo');
-define('DB_USER', 'if0_39818842');
-define('DB_PASS', 'pipe2K88008');
+define('DB_NAME', 'bolsilludo');
+define('DB_USER', 'root');
+define('DB_PASS', '');
 
 // Iniciar sesión
 session_start();
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 // Conexión a la base de datos
 function getDBConnection() {
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
